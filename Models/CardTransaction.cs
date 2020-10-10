@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace ChallengeNetWeb.Models
 {
-    public class Card
+    public class CardTransaction
     {
         [Key]
         public int Id { get; set; }
-        public string Number { get; set; }
-        public int Pin { get; set; }
-        public decimal Amount { get; set; }
-        public short StateId { get; set; }
+        public int CardId { get; set; }
+        public short TransactionId { get; set; }
+
     }
 }
