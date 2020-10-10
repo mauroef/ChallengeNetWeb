@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 
-export class Home extends Component {
+export class IngresoPin extends Component {
   render() {
     return (
       <div className="row">
         <div className="col-md-6">
           <form>
             <div className="form-group">
-              <label htmlFor="cardNumber">
-                Ingrese su número de tarjeta de 16 dígitos
-              </label>
+              <label htmlFor="cardPin">Ingrese su número PIN</label>
               <input
-                id="cardNumber"
+                id="cardPin"
                 className="form-control"
                 type="text"
                 autoComplete="off"
@@ -22,6 +20,9 @@ export class Home extends Component {
             </button>
             <button className="btn btn-primary float-right" type="submit">
               Aceptar
+            </button>
+            <button className="btn btn-danger float-right" type="button">
+              Salir
             </button>
           </form>
         </div>
