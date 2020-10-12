@@ -7,9 +7,24 @@ code {
   color: #e01a76;
 }
 
+.container:nth-child(2) {
+  margin-top: 20vh;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+button.float-right {
   margin-left: 5px;
+}
+
+table {
+  text-align: center;
+}
+
+.jumbotron h1 {
+  font-size: 1.8rem;
 }
