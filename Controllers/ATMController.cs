@@ -31,11 +31,11 @@ namespace ChallengeNetWeb.Controllers
             {
                 if (!String.IsNullOrEmpty(vm.Number))
                 {
-                    bool response = _context.Card
+                    bool success = _context.Card
                         .Where(x => x.Status.Id != (short)Enums.Status.Blocked)
                         .Where(x => x.Number == vm.Number).Any();
 
-                    return Ok(response);
+                    return Ok(new { success, vm.Number });
                 }
                 else
                 {
@@ -71,11 +71,12 @@ namespace ChallengeNetWeb.Controllers
                             _context.SaveChanges();
                         }
 
-                        return Ok("Success");
+                        return Ok(true);
                     }
                     else if (_card.WrongAttempt >= (short)Enums.Card.MaxAttempt)
                     {
                         _card.StatusId = (short)Enums.Status.Blocked;
+                        _wrongCounter++;
                     }
                     else 
                     {
@@ -85,7 +86,7 @@ namespace ChallengeNetWeb.Controllers
 
                     _context.SaveChanges();
 
-                    return BadRequest(_wrongCounter);
+                    return Ok(_wrongCounter);
                 }
                 else
                 {
@@ -104,11 +105,13 @@ namespace ChallengeNetWeb.Controllers
         {
             try
             {
-                if (vm.Id > 0)
+                var _card = _context.Card.Where(c => c.Number == vm.Number).SingleOrDefault();
+
+                if (_card != null)
                 {
                     var _newTransaction = new CardTransaction()
                     {
-                        CardId = vm.Id,
+                        CardId = _card.Id,
                         TransactionId = (short)Enums.Transaction.Balance,
                         CreatedAt = DateTime.Now
                     };
@@ -116,11 +119,11 @@ namespace ChallengeNetWeb.Controllers
                     _context.CardTransaction.Add(_newTransaction);
                     _context.SaveChanges();
 
-                    return Ok("Success!");
+                    return Ok(new { _card }) ;
                 }
                 else
                 {
-                    return BadRequest("Id card error.");
+                    return BadRequest("Card validation error.");
                 }
             }
             catch (Exception ex)
@@ -137,14 +140,14 @@ namespace ChallengeNetWeb.Controllers
             {
                 if (vm.Amount > 0)
                 {
-                    var _card = _context.Card.Find(vm.Id);
+                    var _card = _context.Card.Where(c => c.Number == vm.Number).SingleOrDefault();
 
                     if (_card != null && _card.Balance >= vm.Amount)
                     {
                         decimal _newBalance = _card.Balance - vm.Amount;
-                        var _newTransaction = new CardTransaction()
+                        var _newCardTx = new CardTransaction()
                         {
-                            CardId = vm.Id,
+                            CardId = _card.Id,
                             TransactionId = (short)Enums.Transaction.Withdraw,
                             Balance = _newBalance,
                             Amount = vm.Amount,
@@ -152,19 +155,19 @@ namespace ChallengeNetWeb.Controllers
                         };
 
                         _card.Balance = _newBalance;
-                        _context.CardTransaction.Add(_newTransaction);
+                        _context.CardTransaction.Add(_newCardTx);
                         _context.SaveChanges();
 
-                        return Ok("Success");
+                        return Ok(new { success = true, cardTx = _newCardTx });
                     }
                     else
                     {
-                        return BadRequest("Not enough funds.");
+                        return Ok(new { success = false });
                     }
                 }
                 else
                 {
-                    return BadRequest("Amount error.");
+                    return BadRequest();
                 }
             }
             catch (Exception ex)

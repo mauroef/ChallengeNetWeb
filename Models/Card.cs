@@ -16,6 +16,7 @@ namespace ChallengeNetWeb.Models
         public string Pin { get; set; }
         public decimal Balance { get; set; }
         public short WrongAttempt { get; set; }
+        public DateTime ExpirationDate { get; set; }
         public short StatusId { get; set; }
         public virtual Status Status { get; set; }
     }
