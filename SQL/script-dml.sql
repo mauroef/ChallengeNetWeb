@@ -1,6 +1,27 @@
 USE [ChallengeNetWeb]
 GO
 
+INSERT INTO [dbo].[Status]
+           ([Description])
+     VALUES
+           ('active'), 
+		   ( 'blocked')
+GO
+
+USE [ChallengeNetWeb]
+GO
+
+INSERT INTO [dbo].[Transaction]
+           ([Description])
+     VALUES
+           ('balance'),
+		   ('withdraw')
+GO
+
+
+USE [ChallengeNetWeb]
+GO
+
 INSERT INTO [dbo].[Card]
            ([Number]
            ,[Pin]
@@ -30,34 +51,6 @@ INSERT INTO [dbo].[Card]
            ,'2030-01-01'
            ,2)
 GO
-
-USE [ChallengeNetWeb]
-GO
-
-INSERT INTO [dbo].[Status]
-           ([Description])
-     VALUES
-           ('active', 'blocked')
-GO
-
-USE [ChallengeNetWeb]
-GO
-
-INSERT INTO [dbo].[Status]
-           ([Description])
-     VALUES
-           ('active', 'blocked')
-GO
-
-USE [ChallengeNetWeb]
-GO
-
-INSERT INTO [dbo].[Transaction]
-           ([Description])
-     VALUES
-           ('balance', 'withdraw')
-GO
-
 
 
 
