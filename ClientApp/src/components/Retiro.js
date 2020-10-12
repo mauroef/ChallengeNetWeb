@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import CurrencyInput from 'react-currency-masked-input';
 import swal from 'sweetalert2';
 import store from 'store';
 import isAuthenticated from '../helpers/isAuthenticated';
@@ -37,9 +38,26 @@ export class Retiro extends Component {
     try {
       const { history } = this.props;
       const number = this.props.location.state.detail;
+      const amount = +this.state.amount;
+
+      if (amount <= 0) {
+        swal
+          .fire(
+            swalConf(
+              'Atención',
+              'Debe ingresar un valor positivo mayor a cero.',
+              'warning',
+              false
+            )
+          )
+          .then(this.cleanInput());
+
+        return;
+      }
+
       const response = await API.withdraw({
         number: number,
-        amount: +this.state.amount,
+        amount: amount,
       });
 
       if (response.data.success) {
@@ -95,14 +113,14 @@ export class Retiro extends Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text">$</span>
                 </div>
-                <input
+                <CurrencyInput
                   name="amount"
-                  className="form-control"
-                  type="text"
                   autoComplete="off"
+                  className="form-control"
                   value={amount}
                   onChange={this.changeHandler}
-                ></input>
+                  required
+                />
               </div>
             </div>
             <button

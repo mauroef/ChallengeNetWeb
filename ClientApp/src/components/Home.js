@@ -6,8 +6,7 @@ import API from '../services/api';
 const swalConf = {
   title: 'Error',
   icon: 'error',
-  text:
-    'El número de la tarjeta no ha sido encontrado o se encuentra bloqueda.',
+  text: 'El número de la tarjeta no existe o se encuentra bloqueda.',
 };
 
 export class Home extends Component {
@@ -60,12 +59,13 @@ export class Home extends Component {
               </label>
               <InputMask
                 name="number"
-                className="form-control"
                 autoComplete="off"
+                className="form-control"
                 value={number}
                 onChange={this.changeHandler}
                 mask="9999-9999-9999-9999"
                 maskChar=" "
+                required
               />
             </div>
             <button
