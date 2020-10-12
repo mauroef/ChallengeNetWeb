@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import InputMask from 'react-input-mask';
 import swal from 'sweetalert2';
 import API from '../services/api';
 
@@ -29,7 +30,9 @@ export class Home extends Component {
   submitHandler = async (e) => {
     e.preventDefault();
 
-    const response = await API.fetchCardNumber({ number: this.state.number });
+    const response = await API.fetchCardNumber({
+      number: this.state.number.replaceAll('-', ''),
+    });
     const { history } = this.props;
 
     if (response === null || !response.data.success) {
@@ -55,14 +58,15 @@ export class Home extends Component {
               <label htmlFor="number">
                 Ingrese su número de tarjeta de 16 dígitos
               </label>
-              <input
+              <InputMask
                 name="number"
                 className="form-control"
-                type="text"
                 autoComplete="off"
                 value={number}
                 onChange={this.changeHandler}
-              ></input>
+                mask="9999-9999-9999-9999"
+                maskChar=" "
+              />
             </div>
             <button
               className="btn btn-light"
